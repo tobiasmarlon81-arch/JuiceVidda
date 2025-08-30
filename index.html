@@ -10,12 +10,18 @@
     margin: 0;
     background: #f4fff4;
   }
-  header {
-    text-align: center;
-    padding: 20px;
-    background: linear-gradient(90deg, #a8ff78, #78ffd6);
+ header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  height: 100vh; /* 👉 ocupa toda la pantalla */
+  background: linear-gradient(90deg, #a8ff78, #78ffd6);
     box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-  }
+  color: #4CAF50;
+  position: relative;
+}
   header img {
     max-width: 150px;
     border-radius: 50%;
@@ -44,7 +50,31 @@
     background: #3d8f40;
     color: white;
     transform: scale(1.05);
-  }
+  } 
+
+.scroll-btn {
+  background: white;
+  color: #4CAF50;
+  border: none;
+  padding: 10px 20px;
+  margin: 5px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none; /* quitar subrayado */
+} 
+ .scroll-btn:hover {
+  background: #3d8f40;
+    color: white;
+    transform: scale(1.05);
+}
+
+
+  
 
   /* Carrusel horizontal */
   .carrusel {
@@ -144,14 +174,133 @@
     justify-content: center; align-items: center; margin-top: 10px;
   }
   #foto-perfil-mostrar { display:none; width:100%; height:100%; object-fit:cover; }
+
+  /* ✅ PORTADA */
+  .hero {
+    height: 100vh;
+    background: linear-gradient(90deg, #a8ff78, #78ffd6);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: #333;
+    padding: 20px;
+  }
+  .hero-content {
+    max-width: 900px;
+  }
+
+   .hero-content h1 {
+  font-size: 3rem;   /* título grande */
+  font-weight: bold;
+  color: black;    /* opcional: color más oscuro para contraste */
+  margin-bottom: 15px;
+}
+
+.hero-content p {
+  font-size: 1.4rem;  /* texto más grande */
+  line-height: 1.6;   /* separación entre líneas para que respire */
+  color: #333;
+  max-width: 700px;   /* limitar ancho para mejor lectura */
+  margin: auto;
+}
+
+  .logo-cuadrado {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 20px;
+    margin-bottom: 20px;
+  }
+  .btn {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 12px 25px;
+    background: #ff6600;
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 8px;
+    transition: 0.3s;
+  }
+  .btn:hover {
+    background: #ff4500;
+  }
+
+  /* ✅ CONTACTO */
+.contacto {
+  padding: 50px 20px;
+  text-align: center;    /* centra texto y redes */
+  background: transparent;
+  color: #4CAF50;
+}
+
+.contacto h2 {
+  margin-bottom: 20px;
+  font-size: 2rem;
+}
+
+.contacto p {
+  font-size: 1.2rem;
+  margin: 10px 0;
+}
+
+.redes {
+  margin-top: 20px;
+}
+
+.redes a {
+  margin: 10px;
+  font-size: 28px;
+  color: #4CAF50;
+  transition: 0.3s;
+}
+
+.redes a:hover {
+  color: #ff6600;
+  transform: scale(1.2);
+}
+
+.contacto-btn {
+  background: white;
+  color: #4CAF50;
+  border: none;
+  padding: 10px 20px;
+  margin: 5px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none; /* quitar subrayado */
+}
+
+.contacto-btn:hover {
+  background: #3d8f40;
+  color: white;
+  transform: scale(1.05);
+}
+
 </style>
 </head>
 <body>
-
 <header>
   <img src="logo.jpeg" alt="Juice Vidda Logo">
   <h1>Bienvenido a Juice Vidda 🍹</h1>
+ <a href="#hero" class="scroll-btn">Conócenos</a>
 </header>
+
+<!-- ✅ PORTADA -->
+<section class="hero">
+  <div class="hero-content">
+    <h1>Nosotros</h1>
+    <p>Te proporcionamos una alternativa saludable a las bebidas procesadas, aportando vitaminas, minerales, antioxidantes y otros micronutrientes que fortalecen el sistema inmunológico, mejoran la hidratación y apoyan la desintoxicación del cuerpo. Además, pueden facilitar el consumo de frutas y verduras, ofrecer un descanso al sistema digestivo y contribuir a una dieta equilibrada al impulsar la saciedad y reducir los antojos. </p>
+   <a href="#contacto" class="contacto-btn"><i class="fa fa-phone"></i> Contáctanos</a>
+  </div>
+</section>
 
 <nav>
   <button onclick="mostrar('productos')"><i class="fa fa-list"></i> Menú</button>
@@ -164,6 +313,7 @@
 <div id="productos">
   <h2>Nuestros Jugos</h2>
   <div class="carrusel" id="carrusel">
+    <!-- productos existentes -->
     <div class="producto">
       <img src="jugodepiñayjengibre.jpeg" alt="Jugo 1">
       <h3>Jugo de Piña y Jengibre</h3>
@@ -245,9 +395,19 @@
   <div class="recomendaciones" id="recomendaciones"></div>
 </div>
 
+<!-- ✅ CONTACTO -->
+<section id="contacto" class="contacto">
+  <p><strong>Teléfono:</strong> +502 1234 5678</p>
+  <p><strong>Correo:</strong> contacto@juicevidda.com</p>
+  <div class="redes">
+    <a href="#"><i class="fab fa-facebook"></i></a>
+    <a href="#"><i class="fab fa-instagram"></i></a>
+    <a href="#"><i class="fab fa-x-twitter"></i></a>
+  </div>
+</section>
+
 <!-- Mensaje flotante -->
 <div id="mensaje-carrito">Producto agregado al carrito</div>
-
 <script>
 let productosDisponibles = [
   { nombre:"Jugo de Piña y Jengibre",precio:15,stock:100,idCantidad:"cant1" },
@@ -257,6 +417,11 @@ let productosDisponibles = [
 ];
 
 let carrito=[], total=0;
+
+  document.querySelector(".scroll-btn").addEventListener("click", function(e) {
+    e.preventDefault();
+    document.querySelector(".hero").scrollIntoView({ behavior: "smooth" });
+  });
 
 function mostrar(seccion){
   ["productos","login","carrito","pago","perfil"].forEach(s=>document.getElementById(s).style.display="none");
@@ -426,9 +591,19 @@ window.onload=function(){
   if(usuarioActual){ mostrarPerfil(); document.getElementById("btnPerfil").style.display="inline-flex"; }
   else mostrar("productos");
 }
+
+let header = document.querySelector("header");
+
+window.addEventListener("scroll", () => {
+  if (window.scrollY > 50) {
+    header.classList.add("oculto");  // Se oculta cuando bajas
+  } else {
+    header.classList.remove("oculto"); // Vuelve a aparecer al subir
+  }
+});
+
 </script>
 </body>
 </html>
 
-
-
+ 
