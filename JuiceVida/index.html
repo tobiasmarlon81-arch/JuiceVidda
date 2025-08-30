@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Juice Vidda</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    background: #f4fff4;
+  }
+  header {
+    text-align: center;
+    padding: 20px;
+    background: linear-gradient(90deg, #a8ff78, #78ffd6);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  }
+  header img {
+    max-width: 150px;
+    border-radius: 50%;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  }
+  nav {
+    background: #4CAF50;
+    padding: 12px;
+    text-align: center;
+  }
+  nav button {
+    background: white;
+    color: #4CAF50;
+    border: none;
+    padding: 10px 20px;
+    margin: 5px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  nav button:hover {
+    background: #3d8f40;
+    color: white;
+    transform: scale(1.05);
+  }
+
+  /* Carrusel horizontal */
+  .carrusel {
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    display: flex;
+    gap: 20px;
+    padding: 20px;
+  }
+  .producto {
+    flex: 0 0 220px;
+    background: #fff;
+    padding: 15px;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .producto:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+  }
+  .producto img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 10px;
+  }
+  .producto h3 {
+    margin: 5px 0;
+    font-size: 16px;
+    color: #333;
+  }
+  .producto p {
+    margin: 5px 0;
+    font-weight: bold;
+    color: #444;
+  }
+  .producto input {
+    width: 60px;
+    text-align: center;
+    margin-top: 5px;
+  }
+  button {
+    background: #4CAF50;
+    color: #fff;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: all 0.3s ease;
+  }
+  button:hover {
+    background: #3d8f40;
+    transform: scale(1.05);
+  }
+  #carrito, #login, #pago, #perfil {
+    display: none;
+    padding: 20px;
+    max-width: 600px;
+    margin: auto;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+    animation: fadeIn 0.5s;
+  }
+  h2 { text-align: center; }
+  .recomendaciones {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 20px;
+  }
+  .recomendaciones .producto { width: 200px; }
+  #mensaje-carrito {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #4CAF50;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 8px;
+    display: none;
+    font-size: 14px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    z-index: 1000;
+    animation: fadeInOut 2s forwards;
+  }
+  @keyframes fadeIn { from {opacity:0;} to{opacity:1;} }
+  @keyframes fadeInOut { 0%{opacity:0;} 10%{opacity:1;} 90%{opacity:1;} 100%{opacity:0;} }
+  #recuadro-foto {
+    width: 150px; height: 150px; border: 2px solid #4CAF50;
+    border-radius: 12px; overflow: hidden; display: flex;
+    justify-content: center; align-items: center; margin-top: 10px;
+  }
+  #foto-perfil-mostrar { display:none; width:100%; height:100%; object-fit:cover; }
+</style>
+</head>
+<body>
+
+<header>
+  <img src="logo.jpeg" alt="Juice Vidda Logo">
+  <h1>Bienvenido a Juice Vidda 🍹</h1>
+</header>
+
+<nav>
+  <button onclick="mostrar('productos')"><i class="fa fa-list"></i> Menú</button>
+  <button onclick="mostrar('login')"><i class="fa fa-user-plus"></i> Crear Cuenta</button>
+  <button id="btnPerfil" onclick="mostrarPerfil()" style="display:none;"><i class="fa fa-user"></i> Perfil</button>
+  <button onclick="mostrar('carrito')"><i class="fa fa-shopping-cart"></i> Carrito</button>
+</nav>
+
+<!-- Productos -->
+<div id="productos">
+  <h2>Nuestros Jugos</h2>
+  <div class="carrusel" id="carrusel">
+    <div class="producto">
+      <img src="imagenes/jugodepiñayjengibre.jpeg" alt="Jugo 1">
+      <h3>Jugo de Piña y Jengibre</h3>
+      <p>Q15.00</p>
+      <p>Stock: <span id="stock1">100</span></p>
+      <input type="number" id="cant1" value="1" min="1">
+      <button onclick="agregarCarrito('Jugo de Piña y Jengibre',15,'cant1')">Agregar</button>
+    </div>
+    <div class="producto">
+      <img src="imagenes/jugodemango.jpeg" alt="Jugo 2">
+      <h3>Jugo de Mango</h3>
+      <p>Q15.00</p>
+      <p>Stock: <span id="stock2">100</span></p>
+      <input type="number" id="cant2" value="1" min="1">
+      <button onclick="agregarCarrito('Jugo de Mango',15,'cant2')">Agregar</button>
+    </div>
+    <div class="producto">
+      <img src="imagenes/jugodefrutas.jpeg" alt="Jugo 3">
+      <h3>Jugo de Frutas</h3>
+      <p>Q20.00</p>
+      <p>Stock: <span id="stock3">75</span></p>
+      <input type="number" id="cant3" value="1" min="1">
+      <button onclick="agregarCarrito('Jugo de Frutas',20,'cant3')">Agregar</button>
+    </div>
+    <div class="producto">
+      <img src="imagenes/limonada.jpeg" alt="Jugo 4">
+      <h3>Limonada</h3>
+      <p>Q10.00</p>
+      <p>Stock: <span id="stock4">15</span></p>
+      <input type="number" id="cant4" value="1" min="1">
+      <button onclick="agregarCarrito('Limonada',10,'cant4')">Agregar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Crear cuenta -->
+<div id="login">
+  <h2>Crear Cuenta</h2>
+  <form onsubmit="registrarUsuario(event)">
+    <label>Nombre:</label><br>
+    <input type="text" id="nombreUsuario" required><br><br>
+    <label>Email:</label><br>
+    <input type="email" id="emailUsuario" required><br><br>
+    <label>Contraseña:</label><br>
+    <input type="password" id="passUsuario" required><br><br>
+    <button type="submit">Registrarme</button>
+  </form>
+</div>
+
+<!-- Perfil -->
+<div id="perfil">
+  <h2>Perfil</h2>
+  <p>Nombre: <span id="nombre-perfil"></span></p>
+  <p>Número de compras: <span id="numero-compras">0</span></p>
+  <label>Foto de perfil:</label><br>
+  <input type="file" id="fotoPerfil" accept="image/*"><br><br>
+  <div id="recuadro-foto">
+    <img id="foto-perfil-mostrar" src="" alt="Tu Foto">
+  </div>
+  <br>
+  <button onclick="cerrarSesion()">Cerrar Sesión</button>
+</div>
+
+<!-- Carrito -->
+<div id="carrito">
+  <h2>Carrito</h2>
+  <ul id="lista-carrito"></ul>
+  <p><strong>Total:</strong> Q<span id="total">0.00</span></p>
+  <button onclick="procesarPago()">Proceder al Pago</button>
+</div>
+
+<!-- Pantalla de pago -->
+<div id="pago">
+  <h2>Pantalla de Pago</h2>
+  <p>Gracias por tu compra 🛒</p>
+  <p><strong>Número de Compra:</strong> <span id="numero-compra"></span></p>
+  <p><strong>Total:</strong> Q<span id="total-pago">0.00</span></p>
+  <h3>Productos Relacionados 🍹</h3>
+  <div class="recomendaciones" id="recomendaciones"></div>
+</div>
+
+<!-- Mensaje flotante -->
+<div id="mensaje-carrito">Producto agregado al carrito</div>
+
+<script>
+let productosDisponibles = [
+  { nombre:"Jugo de Piña y Jengibre",precio:15,stock:100,idCantidad:"cant1" },
+  { nombre:"Jugo de Mango",precio:15,stock:100,idCantidad:"cant2" },
+  { nombre:"Jugo de Frutas",precio:20,stock:75,idCantidad:"cant3" },
+  { nombre:"Limonada",precio:10,stock:15,idCantidad:"cant4" }
+];
+
+let carrito=[], total=0;
+
+function mostrar(seccion){
+  ["productos","login","carrito","pago","perfil"].forEach(s=>document.getElementById(s).style.display="none");
+  document.getElementById(seccion).style.display="block";
+}
+
+function agregarCarrito(nombre,precio,idCantidad){
+  let prod = productosDisponibles.find(p=>p.nombre===nombre);
+  let cantidad = parseInt(document.getElementById(idCantidad).value);
+  if(cantidad<=0) cantidad=1;
+  if(cantidad>prod.stock){ alert(`No hay suficiente stock. Stock disponible: ${prod.stock}`); return; }
+
+  carrito.push({ nombre, precio, cantidad });
+  prod.stock -= cantidad;
+  document.getElementById("stock"+idCantidad.slice(-1)).textContent = prod.stock;
+  mostrarCarrito();
+  mostrarMensaje();
+}
+
+function mostrarCarrito(){
+  let lista=document.getElementById("lista-carrito");
+  lista.innerHTML="";
+  total=0;
+  carrito.forEach((item,i)=>{
+    let li=document.createElement("li");
+    li.textContent=`${item.cantidad}x ${item.nombre} - Q${(item.precio*item.cantidad).toFixed(2)}`;
+    let btn=document.createElement("button");
+    btn.textContent="❌";
+    btn.style.marginLeft="10px";
+    btn.onclick=()=>{eliminarDelCarrito(i);}
+    li.appendChild(btn);
+    lista.appendChild(li);
+    total+=item.precio*item.cantidad;
+  });
+  document.getElementById("total").textContent=total.toFixed(2);
+  document.getElementById("total-pago").textContent=total.toFixed(2);
+}
+
+function eliminarDelCarrito(index){
+  let item=carrito[index];
+  let prod=productosDisponibles.find(p=>p.nombre===item.nombre);
+  prod.stock+=item.cantidad;
+  document.getElementById("stock"+prod.idCantidad.slice(-1)).textContent=prod.stock;
+  carrito.splice(index,1);
+  mostrarCarrito();
+}
+
+function registrarUsuario(e){
+  e.preventDefault();
+  let nombre=document.getElementById("nombreUsuario").value;
+  let usuario = { nombre, foto:"", compras:[] };
+  localStorage.setItem(nombre, JSON.stringify(usuario));
+  localStorage.setItem("usuarioActual", nombre);
+  document.getElementById("nombre-perfil").textContent=nombre;
+  document.getElementById("btnPerfil").style.display="inline-flex";
+  alert("Usuario registrado y sesión iniciada");
+  mostrar("productos");
+}
+
+function mostrarPerfil(){
+  const usuarioActual=localStorage.getItem("usuarioActual");
+  if(usuarioActual){
+    const usuario=JSON.parse(localStorage.getItem(usuarioActual));
+    document.getElementById("nombre-perfil").textContent=usuario.nombre;
+    document.getElementById("numero-compras").textContent=usuario.compras.length;
+    if(usuario.foto){
+      const img=document.getElementById("foto-perfil-mostrar");
+      img.src=usuario.foto; img.style.display="block";
+    }
+    mostrar("perfil");
+  }
+}
+
+document.getElementById("fotoPerfil").addEventListener("change",function(e){
+  const file=e.target.files[0];
+  if(file){
+    const reader=new FileReader();
+    reader.onload=function(ev){
+      const img=document.getElementById("foto-perfil-mostrar");
+      img.src=ev.target.result; img.style.display="block";
+      const usuario=JSON.parse(localStorage.getItem(localStorage.getItem("usuarioActual")));
+      usuario.foto=ev.target.result;
+      localStorage.setItem(usuario.nombre,JSON.stringify(usuario));
+    }
+    reader.readAsDataURL(file);
+  }
+});
+
+function cerrarSesion(){
+  localStorage.removeItem("usuarioActual");
+  document.getElementById("btnPerfil").style.display="none";
+  alert("Sesión cerrada");
+  mostrar("productos");
+}
+
+function mostrarMensaje(){
+  const m=document.getElementById("mensaje-carrito");
+  m.style.display="block";
+  setTimeout(()=>{ m.style.display="none"; },2000);
+}
+
+function generarNumeroCompra(){ return 'C'+Math.floor(100000+Math.random()*900000); }
+
+function procesarPago(){
+  if(carrito.length===0){ alert("No hay productos en el carrito"); return; }
+  mostrar('pago');
+  const numeroCompra=generarNumeroCompra();
+  document.getElementById("numero-compra").textContent=numeroCompra;
+
+  const usuarioActual=localStorage.getItem("usuarioActual");
+  if(usuarioActual){
+    const usuario=JSON.parse(localStorage.getItem(usuarioActual));
+    usuario.compras.push({ numero:numeroCompra, total, productos:[...carrito] });
+    localStorage.setItem(usuario.nombre,JSON.stringify(usuario));
+  }
+  carrito=[]; total=0;
+  mostrarCarrito();
+  cargarRecomendaciones();
+}
+
+function cargarRecomendaciones(){
+  let cont=document.getElementById("recomendaciones");
+  cont.innerHTML="";
+  let prods=productosDisponibles.sort(()=>0.5-Math.random()).slice(0,2);
+  prods.forEach(p=>{
+    let div=document.createElement("div");
+    div.className="producto";
+    div.innerHTML=`<img src="${p.nombre.includes('Piña')?'imagenes/jugodepiñayjengibre.jpeg':p.nombre.includes('Mango')?'imagenes/jugodemango.jpeg':p.nombre.includes('Frutas')?'imagenes/jugodefrutas.jpeg':'imagenes/limonada.jpeg'}" alt="${p.nombre}">
+    <h3>${p.nombre}</h3><p>Q${p.precio}</p>`;
+    cont.appendChild(div);
+  });
+}
+
+window.onload=function(){
+  const usuarioActual=localStorage.getItem("usuarioActual");
+  if(usuarioActual){ mostrarPerfil(); document.getElementById("btnPerfil").style.display="inline-flex"; }
+  else mostrar("productos");
+}
+</script>
+</body>
+</html>
