@@ -276,23 +276,32 @@ function agregarCarrito(nombre,precio,idCantidad){
   mostrarMensaje();
 }
 
-function mostrarCarrito(){
-  let lista=document.getElementById("lista-carrito");
-  lista.innerHTML="";
-  total=0;
-  carrito.forEach((item,i)=>{
-    let li=document.createElement("li");
-    li.textContent=`${item.cantidad}x ${item.nombre} - Q${(item.precio*item.cantidad).toFixed(2)}`;
-    let btn=document.createElement("button");
-    btn.textContent="❌";
-    btn.style.marginLeft="10px";
-    btn.onclick=()=>{eliminarDelCarrito(i);}
-    li.appendChild(btn);
+function mostrarCarrito() {
+  let lista = document.getElementById("lista-carrito");
+  lista.innerHTML = "";
+  total = 0;
+
+  carrito.forEach((item, index) => {
+    let li = document.createElement("li");
+    li.textContent = `${item.cantidad}x ${item.nombre} - Q${(item.precio * item.cantidad).toFixed(2)}`;
+
+    let btnEliminar = document.createElement("button");
+    btnEliminar.textContent = "❌";
+    btnEliminar.style.marginLeft = "10px";
+    btnEliminar.onclick = () => eliminarDelCarrito(index);
+
+    li.appendChild(btnEliminar);
     lista.appendChild(li);
-    total+=item.precio*item.cantidad;
+
+    total += item.precio * item.cantidad;
   });
-  document.getElementById("total").textContent=total.toFixed(2);
-  document.getElementById("total-pago").textContent=total.toFixed(2);
+
+  // Mostrar total en el carrito
+  document.getElementById("total").textContent = total.toFixed(2);
+
+  // GUARDAR EL TOTAL para usar luego en la pantalla de pago
+  // (lo guardamos como número/ string para evitar problemas)
+  localStorage.setItem("totalCompra", total.toFixed(2));
 }
 
 function eliminarDelCarrito(index){
@@ -360,22 +369,44 @@ function mostrarMensaje(){
 
 function generarNumeroCompra(){ return 'C'+Math.floor(100000+Math.random()*900000); }
 
-function procesarPago(){
-  if(carrito.length===0){ alert("No hay productos en el carrito"); return; }
-  mostrar('pago');
-  const numeroCompra=generarNumeroCompra();
-  document.getElementById("numero-compra").textContent=numeroCompra;
-
-  const usuarioActual=localStorage.getItem("usuarioActual");
-  if(usuarioActual){
-    const usuario=JSON.parse(localStorage.getItem(usuarioActual));
-    usuario.compras.push({ numero:numeroCompra, total, productos:[...carrito] });
-    localStorage.setItem(usuario.nombre,JSON.stringify(usuario));
+  function procesarPago() {
+  if (carrito.length === 0) {
+    alert("No hay productos en el carrito");
+    return;
   }
-  carrito=[]; total=0;
-  mostrarCarrito();
+
+  // Recuperar total guardado (fallback: calcular desde carrito)
+  const totalGuardado = parseFloat(localStorage.getItem("totalCompra"));
+  const totalDesdeCarrito = carrito.reduce((s, it) => s + it.precio * it.cantidad, 0);
+  const totalCompra = !isNaN(totalGuardado) ? totalGuardado : totalDesdeCarrito;
+
+  // Mostrar pantalla de pago y datos
+  mostrar("pago");
   cargarRecomendaciones();
+
+  const numeroCompra = generarNumeroCompra();
+  document.getElementById("numero-compra").textContent = numeroCompra;
+  document.getElementById("total-pago").textContent = totalCompra.toFixed(2); // 👈 Se muestra ANTES de limpiar
+
+  // Guardar la compra si hay usuario logueado
+  const usuarioActual = localStorage.getItem("usuarioActual");
+  if (usuarioActual) {
+    const usuario = JSON.parse(localStorage.getItem(usuarioActual));
+    usuario.compras.push({ numero: numeroCompra, total: totalCompra, productos: [...carrito] });
+    localStorage.setItem(usuarioActual, JSON.stringify(usuario));
+    document.getElementById("numero-compras").textContent = usuario.compras.length;
+  }
+
+  // 👇 Limpiar carrito y localStorage después de 1 segundo
+  setTimeout(() => {
+    carrito = [];
+    total = 0;
+    mostrarCarrito();
+    localStorage.removeItem("totalCompra");
+  }, 1000);
 }
+
+
 
 function cargarRecomendaciones(){
   let cont=document.getElementById("recomendaciones");
@@ -398,5 +429,6 @@ window.onload=function(){
 </script>
 </body>
 </html>
+
 
 
