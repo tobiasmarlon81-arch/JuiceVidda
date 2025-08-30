@@ -221,35 +221,74 @@
   #foto-perfil-mostrar { display:none; width:100%; height:100%; object-fit:cover; }
 
   /* ✅ PORTADA */
-  .hero {
-    height: 100vh;
-    background: linear-gradient(90deg, #a8ff78, #78ffd6);
-    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    color: #333;
-    padding: 20px;
-  }
-  .hero-content {
-    max-width: 900px;
-  }
+ /* ✅ PORTADA */
+.hero {
+  height: 100vh;
+  background: url("3jugos.jpeg") no-repeat center center/cover; /* 👈 Fondo con imagen */
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: white; /* 👈 Texto en blanco para contraste */
+  padding: 20px;
+  position: relative; /* Necesario para overlay */
+}
 
-   .hero-content h1 {
-  font-size: 3rem;   /* título grande */
+/* Overlay oscuro */
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.35); /* oscurece un poco la foto */
+}
+
+.hero-content {
+  max-width: 900px;
+  position: relative;
+  z-index: 1; /* 👈 asegura que el texto esté arriba del overlay */
+}
+
+.hero-content h1 {
+  font-size: 3rem;
   font-weight: bold;
-  color: black;    /* opcional: color más oscuro para contraste */
+  color: #fff; /* 👈 en blanco */
   margin-bottom: 15px;
 }
 
 .hero-content p {
-  font-size: 1.4rem;  /* texto más grande */
-  line-height: 1.6;   /* separación entre líneas para que respire */
-  color: #333;
-  max-width: 700px;   /* limitar ancho para mejor lectura */
+  font-size: 1.4rem;
+  line-height: 1.6;
+  color: #f1f1f1;
+  max-width: 700px;
   margin: auto;
 }
+
+ /* 📱 Responsivo tablet */
+@media (max-width: 1024px) {
+  .hero-content h1 {
+    font-size: 2.2rem;
+  }
+  .hero-content p {
+    font-size: 1.1rem;
+  }
+}
+
+/* 📱 Responsivo móvil */
+@media (max-width: 768px) {
+  .hero {
+    height: auto;
+    padding: 60px 20px;
+  }
+  .hero-content h1 {
+    font-size: 1.8rem;
+  }
+  .hero-content p {
+    font-size: 1rem;
+  }
+}
+
+
 
   .logo-cuadrado {
     width: 120px;
