@@ -384,7 +384,7 @@ function cargarRecomendaciones(){
   prods.forEach(p=>{
     let div=document.createElement("div");
     div.className="producto";
-    div.innerHTML=`<img src="${p.nombre.includes('Piña')?'imagenes/jugodepiñayjengibre.jpeg':p.nombre.includes('Mango')?'imagenes/jugodemango.jpeg':p.nombre.includes('Frutas')?'imagenes/jugodefrutas.jpeg':'imagenes/limonada.jpeg'}" alt="${p.nombre}">
+    div.innerHTML=`<img src="${p.nombre.includes('Piña')?'jugodepiñayjengibre.jpeg':p.nombre.includes('Mango')?'jugodemango.jpeg':p.nombre.includes('Frutas')?'jugodefrutas.jpeg':'limonada.jpeg'}" alt="${p.nombre}">
     <h3>${p.nombre}</h3><p>Q${p.precio}</p>`;
     cont.appendChild(div);
   });
@@ -398,4 +398,5 @@ window.onload=function(){
 </script>
 </body>
 </html>
+
 
