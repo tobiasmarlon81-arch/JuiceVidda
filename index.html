@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta charset="UTF-8">
 <title>Juice Vidda</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
@@ -16,12 +17,56 @@
   align-items: center;
   justify-content: center;
   text-align: center;
-  height: 100vh; /* 👉 ocupa toda la pantalla */
+  height: 100vh; /* Ocupa toda la pantalla en PC */
   background: linear-gradient(90deg, #a8ff78, #78ffd6);
-    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
   color: #4CAF50;
   position: relative;
+  padding: 20px;
 }
+
+/* --- Tablet (pantallas menores a 1024px) --- */
+@media (max-width: 1024px) {
+  header {
+    height: auto;            /* Evita que quede demasiado alto */
+    padding: 40px 20px;
+  }
+
+  header h1 {
+    font-size: 2rem;         /* Reduce tamaño de letra */
+  }
+
+  header img.logo {
+    width: 180px;
+    height: auto;
+  }
+}
+
+/* --- Teléfono (pantallas menores a 768px) --- */
+@media (max-width: 768px) {
+  header {
+    height: auto;            /* Que se ajuste al contenido */
+    padding: 30px 15px;
+  }
+
+  header h1 {
+    font-size: 1.6rem;
+  }
+
+  header img.logo {
+    width: 120px;
+    height: auto;
+  }
+
+  header .btn {
+    width: 100%;             /* Botón ocupa todo el ancho disponible */
+    max-width: 280px;
+    margin: 10px auto;
+    font-size: 1rem;
+    padding: 12px;
+  }
+}
+
   header img {
     max-width: 150px;
     border-radius: 50%;
